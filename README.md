@@ -1,6 +1,6 @@
 ## GraphQL API (Written in Node.js)
 
-## Live API (Can hit with Postman GraphQL requests, see examples below)
+## Hosted API (Can hit with Postman GraphQL requests, see examples below)
 https://sleepy-wildwood-36218.herokuapp.com/graphql
 
 ## Running Locally

@@ -7,8 +7,8 @@ https://sleepy-wildwood-36218.herokuapp.com/graphql
 - Clone this repo
 - Node version >= 12.0.0 (NPM >= 6.9.0)
 - `npm install`
-- `npm run watch`
-- (Open seperate terminal) `npm run start`
+- `npm run postinstall`
+- `npm run start`
 - API available at `http://localhost:3001/graphql`
 
 ## Endpoint Example Payloads

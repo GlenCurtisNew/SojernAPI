@@ -13,6 +13,9 @@ import { MathResolver } from './resolvers/math';
             validate: false,
         }),
     });
+    app.get('/', (_, res) => {
+        res.redirect('/graphql')
+    })
     apolloServer.applyMiddleware({ app });
     app.listen('3001', () => {
         console.log(`Apollo graphql server started on http://localhost:3001${apolloServer.graphqlPath}`);

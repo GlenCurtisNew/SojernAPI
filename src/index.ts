@@ -17,7 +17,7 @@ import { MathResolver } from './resolvers/math';
         res.redirect('/graphql')
     })
     apolloServer.applyMiddleware({ app });
-    app.listen('3001', () => {
+    app.listen(process.env.PORT || '3001', () => {
         console.log(`Apollo graphql server started on http://localhost:3001${apolloServer.graphqlPath}`);
     });
 })();

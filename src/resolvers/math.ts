@@ -1,28 +1,29 @@
-import {Resolver, Query, Field, Arg, ObjectType, Int} from 'type-graphql'
-import { average, quantifierErrorCheck, median, quantile } from "../helpers";
+import { Resolver, Query, Field, Arg, ObjectType, Int } from 'type-graphql';
+
+import { average, quantifierErrorCheck, median, quantile } from '../helpers';
 
 @ObjectType()
 class Error {
     @Field({ nullable: true })
-    message?: string
+    message?: string;
 }
 
 @ObjectType()
 class ArrayResponse {
     @Field(() => Error, { nullable: true })
-    error?: Error
+    error?: Error;
 
     @Field(() => [Number], { nullable: true })
-    answer?: number[]
+    answer?: number[];
 }
 
 @ObjectType()
 class NumberResponse {
     @Field(() => Error, { nullable: true })
-    error?: Error
+    error?: Error;
 
-    @Field(() => Number, { nullable: true})
-    answer?: number
+    @Field(() => Number, { nullable: true })
+    answer?: number;
 }
 
 @Resolver()
@@ -30,8 +31,8 @@ export class MathResolver {
     @Query(() => ArrayResponse)
     min(
         @Arg('numbers', () => [Number], { nullable: false }) numbers: number[],
-        @Arg('quantifier', () => Number, { nullable: false }) quantifier: number
-    ) {
+        @Arg('quantifier', () => Number, { nullable: false }) quantifier: number,
+    ): { answer: number[] } | { error: { message: string } } {
         const error = quantifierErrorCheck(quantifier, numbers);
         if (error) {
             return error;
@@ -45,15 +46,15 @@ export class MathResolver {
         const sort = numbers.sort((a, b) => a - b);
         const uniqueAndSplice = [...new Set(sort)].splice(0, quantifier);
         return {
-            answer: uniqueAndSplice
+            answer: uniqueAndSplice,
         };
     }
 
     @Query(() => ArrayResponse)
     max(
         @Arg('numbers', () => [Number], { nullable: false }) numbers: number[],
-        @Arg('quantifier', () => Number, { nullable: false }) quantifier: number
-    ) {
+        @Arg('quantifier', () => Number, { nullable: false }) quantifier: number,
+    ): { answer: number[] } | { error: { message: string } } {
         const error = quantifierErrorCheck(quantifier, numbers);
         if (error) {
             return error;
@@ -62,51 +63,51 @@ export class MathResolver {
         const sort = numbers.sort((a, b) => b - a);
         const uniqueAndSplice = [...new Set(sort)].splice(0, quantifier);
         return {
-            answer: uniqueAndSplice
+            answer: uniqueAndSplice,
         };
     }
 
     @Query(() => NumberResponse)
     avg(
         @Arg('numbers', () => [Number], { nullable: false }) numbers: number[],
-    ) {
+    ): { answer: number } | { error: { message: string } } {
         if (!numbers.length) {
             return {
-                error: { message: "Array must contain values" }
-            }
+                error: { message: 'Array must contain values' },
+            };
         }
         return {
-            answer: average(numbers)
-        }
+            answer: average(numbers),
+        };
     }
 
     @Query(() => NumberResponse)
     median(
         @Arg('numbers', () => [Number], { nullable: false }) numbers: number[],
-    ) {
+    ): { answer: number } | { error: { message: string } } {
         if (!numbers.length) {
             return {
-                error: { message: "Array must contain values" }
-            }
+                error: { message: 'Array must contain values' },
+            };
         }
         return {
-            answer: median(numbers)
-        }
+            answer: median(numbers),
+        };
     }
 
     @Query(() => NumberResponse)
     percentile(
         @Arg('numbers', () => [Number], { nullable: false }) numbers: number[],
-        @Arg('quantifier', () => Int, { nullable: false }) quantifier: number
-    ) {
-        if(quantifier <= 0) {
+        @Arg('quantifier', () => Int, { nullable: false }) quantifier: number,
+    ): { answer: number } | { error: { message: string } } {
+        if (quantifier <= 0) {
             return {
-                error: { message: "Quantifier must be > 0" }
-            }
+                error: { message: 'Quantifier must be > 0' },
+            };
         }
 
         return {
-            answer: quantile(numbers, quantifier / 100)
-        }
+            answer: quantile(numbers, quantifier / 100),
+        };
     }
 }
